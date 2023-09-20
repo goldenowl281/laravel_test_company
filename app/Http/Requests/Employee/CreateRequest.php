@@ -25,7 +25,7 @@ class CreateRequest extends FormRequest
             'name'  => 'required|string|max:255',
             'company_id' => 'required',
             'email' => 'required|email|max:255|unique:employees', // Added the `unique:employees` rule to check for unique emails
-            'phone' => 'required|numeric|regex:/^\d{6,}$/',
+            'phone' => 'required|numeric|unique:employees|regex:/^\d{6,}$/',
         ];
     }
 

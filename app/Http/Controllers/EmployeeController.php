@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Employee\CreateRequest;
+use App\Http\Requests\Employee\EditRequest;
 use App\Interfaces\EmployeeRepositoryInterface;
 use App\Models\Company;
 use Illuminate\Database\QueryException;
@@ -25,7 +26,6 @@ class EmployeeController extends Controller
         // dd($companies);
         $employees = $this->employee->getAllEmployees();
         return view('admin.employees.index', compact('employees'));
-
     }
 
     /**
@@ -36,7 +36,6 @@ class EmployeeController extends Controller
         $companies = Company::pluck('name', 'id');
 
         return view('admin.employees.create', compact('companies'));
-
     }
 
     /**
@@ -82,15 +81,37 @@ class EmployeeController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $companies = Company::pluck('name', 'id');
+        $employee = $this->employee->getEmployeeById($id);
+        return view('admin.employees.edit', compact('employee', 'companies'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update( EditRequest $request, string $id)
     {
-        //
+        try {
+            // dd($request->all());
+            DB::beginTransaction();
+
+            $data = [
+                'name'       => $request->name,
+                'email'      => $request->email,
+                'phone'      => $request->phone,
+                'company_id' => $request->company_id,
+            ];
+
+            $this->employee->updateEmployee($id, $data);
+            DB::commit();
+
+            return redirect()->route('employees.index')
+                             ->with('success', 'Employee updated successfully');
+        } catch (QueryException $e) {
+            dd($e);
+            DB::rollBack();
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
 
     /**
@@ -98,6 +119,11 @@ class EmployeeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $this->employee->deleteEmployee($id);
+            return redirect()->route('employees.index')->with('success', 'Employee deleted successfully');
+        } catch (\Exception $e) {
+            return redirect()->route('employees.index')->with('error', 'Error deleting Employee: ' . $e->getMessage());
+        }
     }
 }

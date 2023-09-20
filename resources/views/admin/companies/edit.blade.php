@@ -7,7 +7,7 @@
                     <h1>Update Company</h1>
                 </div>
                 <div class="col-sm-6 text-right">
-                    <a href="" class="btn btn-primary">Back</a>
+                    <a href="{{ route('companies.index') }}" class="btn btn-primary">Back</a>
                 </div>
             </div>
         </div>
@@ -78,7 +78,7 @@
                 </div>
                 {{-- <input type="hidden" name="id" value="{{ $company->id }}"> --}}
                 <div class="pb-5 pt-3">
-                    <a href="" class="btn btn-outline-dark ml-3">Cancel</a>
+                    <a href="{{ route('companies.index') }}" class="btn btn-outline-dark ml-3">Cancel</a>
                     <button type="submit" class="btn btn-primary">Update</button>
                 </div>
             </form>

@@ -55,8 +55,6 @@ class CompanyEditRequest extends FormRequest
             'name.max'      => "Name must be less than 255",
             'email.email'   => "Email type wrong",
             'email.required'=> "Please fill email",
-            // 'logo.image'    => "Please insert image only",
-            // 'logo'          => "Please insert a valid image (jpeg, png, jpg, gif) with a maximum size of 2048 KB",
             'website.required'  => "Please fill website url",
             'website.url'       => "Only fill url",
             'email.unique'  => "Email already exists",

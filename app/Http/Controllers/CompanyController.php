@@ -30,17 +30,15 @@ class CompanyController extends Controller
         return view('admin.companies.index', compact('companies'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
+    //  * Show the form for creating a new resource.
     public function create()
     {
         return view('admin.companies.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
+    //  Store a newly created resource in storage.
     public function store(CompanyRequest $request)
     {
         // dd($request->all());
@@ -82,26 +80,21 @@ class CompanyController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
+
+    //  * Display the specified resource.
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    //  * Show the form for editing the specified resource.
     public function edit(string $id)
     {
         $company = $this->company->getCompanyById($id);
         return view('admin.companies.edit', compact('company'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    //  * Update the specified resource in storage.
     public function update(CompanyEditRequest $request, string $id)
     {
         // dd($request->all());
@@ -147,34 +140,32 @@ class CompanyController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-public function destroy(string $id)
-{
-    try {
-        DB::beginTransaction();
+    //  * Remove the specified resource from storage.
+    public function destroy(string $id)
+    {
+        try {
+            DB::beginTransaction();
 
-        $company = $this->company->getCompanyById($id);
+            $company = $this->company->getCompanyById($id);
 
-        // Get the path to the old image
-        $old_image_path = storage_path('app/public/company-logo/' . $company->logo);
+            // Get the path to the old image
+            $old_image_path = storage_path('app/public/company-logo/' . $company->logo);
 
-        // Delete the old image
-        if (file_exists($old_image_path)) {
-            unlink($old_image_path);
+            // Delete the old image
+            if (file_exists($old_image_path)) {
+                unlink($old_image_path);
+            }
+
+            // Delete the company
+            $this->company->deleteCompany($id);
+
+            DB::commit();
+
+            return redirect()->route('companies.index')->with('success', 'Company deleted successfully');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('companies.index')->with('error', 'Error deleting company: ' . $e->getMessage());
         }
-
-        // Delete the company
-        $this->company->deleteCompany($id);
-
-        DB::commit();
-
-        return redirect()->route('companies.index')->with('success', 'Company deleted successfully');
-    } catch (\Exception $e) {
-        DB::rollBack();
-        return redirect()->route('companies.index')->with('error', 'Error deleting company: ' . $e->getMessage());
     }
-}
 
 }

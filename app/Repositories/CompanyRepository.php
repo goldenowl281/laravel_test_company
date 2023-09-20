@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
+use App\Http\Requests\CompanyRequest;
+use App\Http\Resources\CompanyResource;
 use App\Interfaces\CompanyRepositoryInterface;
 use App\Models\Company;
 
@@ -9,7 +11,9 @@ class CompanyRepository implements CompanyRepositoryInterface
 {
     public function getAllCompany()
     {
-        return Company::paginate(3);
+        // return Company::paginate(3);
+        $company = Company::paginate(3);
+        return CompanyResource::collection($company);
     }
     public function getCompanyById($id)
     {
@@ -25,6 +29,7 @@ class CompanyRepository implements CompanyRepositoryInterface
     }
     public function updateCompany($id, array $data)
     {
+        dd($data);
         return Company::whereId($id)->update($data);
     }
 }
