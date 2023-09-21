@@ -132,7 +132,6 @@ class CompanyApiController extends Controller
                 'data'    => $company_data
             ]);
         } catch (QueryException $e) {
-            dd($e);
             DB::rollBack();
             Log::error($e->getMessage());
             return response()->json([

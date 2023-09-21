@@ -19,7 +19,7 @@ class CompanyRepository implements CompanyRepositoryInterface
     {
         $company = Company::findOrFail($id);
         return new CompanyResource($company);
-        
+
     }
     public function deleteCompany($id)
     {
@@ -31,7 +31,6 @@ class CompanyRepository implements CompanyRepositoryInterface
     }
     public function updateCompany($id, array $data)
     {
-        dd($data);
         return Company::whereId($id)->update($data);
     }
 }
