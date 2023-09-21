@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Http\Resources\EmployeeResource;
 use App\Interfaces\EmployeeRepositoryInterface;
 use App\Models\Company;
 use App\Models\Employee;
@@ -10,11 +11,13 @@ class EmployeeRepository implements EmployeeRepositoryInterface
 {
     public function getAllEmployees()
     {
-        return Employee::with('company')->paginate(3);
+        $employees = Employee::with('company')->paginate(3);
+        return EmployeeResource::collection($employees);
     }
     public function getEmployeeById($id)
     {
-        return Employee::findOrFail($id);
+        $employee = Employee::findOrFail($id);
+        return new EmployeeResource($employee);
     }
     public function deleteEmployee($id)
     {

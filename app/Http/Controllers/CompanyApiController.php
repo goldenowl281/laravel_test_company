@@ -70,13 +70,6 @@ class CompanyApiController extends Controller
 //     * Display the specified resource.
     public function show(Company $company, CompanyRepository $companyRepository)
     {
-        if (!$company) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Company could not be found',
-            ], 404);
-        }
-
         $company_data = $companyRepository->getCompanyById($company->id);
         return response()->json($company_data);
     }

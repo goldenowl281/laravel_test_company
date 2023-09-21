@@ -28,9 +28,7 @@ class EmployeeController extends Controller
         return view('admin.employees.index', compact('employees'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+//     * Show the form for creating a new resource.
     public function create()
     {
         $companies = Company::pluck('name', 'id');
@@ -38,9 +36,7 @@ class EmployeeController extends Controller
         return view('admin.employees.create', compact('companies'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+//     * Store a newly created resource in storage.
     public function store(CreateRequest $request)
     {
         try {
@@ -68,17 +64,13 @@ class EmployeeController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
+//     * Display the specified resource.
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+//     * Show the form for editing the specified resource.
     public function edit(string $id)
     {
         $companies = Company::pluck('name', 'id');
@@ -86,9 +78,7 @@ class EmployeeController extends Controller
         return view('admin.employees.edit', compact('employee', 'companies'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+//     * Update the specified resource in storage.
     public function update( EditRequest $request, string $id)
     {
         try {
@@ -114,9 +104,7 @@ class EmployeeController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+//     * Remove the specified resource from storage.
     public function destroy(string $id)
     {
         try {
