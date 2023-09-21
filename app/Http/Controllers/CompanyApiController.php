@@ -31,7 +31,6 @@ class CompanyApiController extends Controller
     {
         try {
             DB::beginTransaction();
-
             $data = [
                 'name'      =>  $request->name,
                 'email'     =>  $request->email,
@@ -49,9 +48,6 @@ class CompanyApiController extends Controller
                 //     $constraint->aspectRatio();
                 // });
                 // $new_image->store('public', $image_name);
-
-
-
                 $data['logo'] = $image_name;
             }
             $company = $companyRepository->createCompany($data);
@@ -72,11 +68,11 @@ class CompanyApiController extends Controller
             ], 400);
         }
     }
-    
+
     /**
      * Display the specified resource.
      */
-    public function show(Company $company)
+    public function show(Company $company, CompanyRepository $companyRepository)
     {
         if (!$company) {
             return response()->json([
@@ -84,7 +80,9 @@ class CompanyApiController extends Controller
                 'message' => 'Company could not be found',
             ], 404);
         }
-        return response()->json($company);
+
+        $company_data = $companyRepository->getCompanyById($company->id);
+        return response()->json($company_data);
     }
 
     /**
@@ -115,11 +113,10 @@ class CompanyApiController extends Controller
 
                 $data['logo'] = $image_name;
             }
-            $company_logo = $companyRepository->getCompanyById($company);
 
             //GET THE PATH TO THE OLD IMAGE
             $old_image_path = storage_path(
-                'app/public/company-logo/' . $company_logo->logo
+                'app/public/company-logo/' . $company->logo
             );
 
             //DELETE THE OLD IMAGE
@@ -149,8 +146,53 @@ class CompanyApiController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Company $company)
-    {
-        //
+    public function destroy(Company $company,  CompanyRepository $companyRepository)
+    { {
+            try {
+                DB::beginTransaction();
+
+                // Ensure the company exists
+                if (!$company->id) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Company not found',
+                    ], 404);
+                }
+
+                // Delete the company
+                $company_delete =  $companyRepository->deleteCompany($company->id);
+                DB::commit();
+
+                if ($company_delete) {
+                    return response()->json([
+                        'success' => true,
+                        'message' => "company deleted successfully",
+                    ]);
+                } else {
+                    // Get the path to the old image
+                    $old_image_path = storage_path(
+                        'app/public/company-logo/' . $company->logo
+                    );
+
+                    // Delete the old image
+                    if (file_exists($old_image_path)) {
+                        unlink($old_image_path);
+                    }
+                    return response()->json([
+                        'success' => true,
+                        'message' => "company deleted successfully",
+                    ]);
+                }
+            } catch (\Exception $e) {
+                DB::rollBack();
+                Log::error('Error deleting company: ' . $e->getMessage());
+
+                return response()->json([
+                    'success' => false,
+                    'message' => "Error deleting company",
+                    'error'  => $e->getMessage()
+                ], 500);
+            }
+        }
     }
 }

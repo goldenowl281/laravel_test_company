@@ -19,4 +19,11 @@ class CompanyResource extends JsonResource
             'name' => $this->name,
         ];
     }
+    // public function with(Request $request)
+    // {
+    //     return [
+    //         'vesion' => '1.0.0',
+    //         'api_url'=> url('http://localhost:8000/api/companies/')
+    //     ];
+    // }
 }

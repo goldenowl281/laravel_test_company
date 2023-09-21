@@ -22,9 +22,9 @@ class CompanyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'  => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:companies', // Added the `unique:companies` rule to check for unique emails
-            'logo'  => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Assuming logo is an image file
+            'name'      => 'required|string|max:255',
+            'email'     => 'required|email|max:255|unique:companies', // Added the `unique:companies` rule to check for unique emails
+            'logo'      => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Assuming logo is an image file
             'website'   => 'required|url|max:255',
         ];
     }

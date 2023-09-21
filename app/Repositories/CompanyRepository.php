@@ -17,7 +17,9 @@ class CompanyRepository implements CompanyRepositoryInterface
     }
     public function getCompanyById($id)
     {
-        return Company::findOrFail($id);
+        $company = Company::findOrFail($id);
+        return new CompanyResource($company);
+        
     }
     public function deleteCompany($id)
     {
