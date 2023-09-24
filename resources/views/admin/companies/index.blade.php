@@ -143,7 +143,7 @@
                 </table>
             </div>
             <div class="card-footer clearfix">
-                 {{ $companies->links() }}
+{{--                 {{ $companies->links() }}--}}
             </div>
         </div>
     </div>

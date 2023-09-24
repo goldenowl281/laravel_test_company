@@ -46,7 +46,7 @@ class EmployeeApiController extends Controller
                'success' => false,
                'message' => 'Error in employee create',
                'error'   => $e->getMessage(),
-            ]);
+            ],400);
         }
 
     }

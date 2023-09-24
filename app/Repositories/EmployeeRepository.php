@@ -11,7 +11,7 @@ class EmployeeRepository implements EmployeeRepositoryInterface
 {
     public function getAllEmployees()
     {
-        $employees = Employee::with('company')->paginate(3);
+        $employees = Employee::with('company')->get();
         return EmployeeResource::collection($employees);
     }
     public function getEmployeeById($id)
